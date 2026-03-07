@@ -46,6 +46,15 @@ public class GlobalExceptionHandler {
 			return new ResponseEntity<MyErrorDetail>(myError, HttpStatus.BAD_REQUEST);
 		}
 		
+		@ExceptionHandler(RoleException.class)
+		public ResponseEntity<MyErrorDetail> roleExceptionHandler(RoleException roleException,
+				WebRequest webRequest){
+			MyErrorDetail myError = new MyErrorDetail(roleException.getMessage(), 
+					webRequest.getDescription(false), LocalDateTime.now());
+			
+			return new ResponseEntity<MyErrorDetail>(myError, HttpStatus.BAD_REQUEST);
+		}
+		
 		@ExceptionHandler(Exception.class)
 		public ResponseEntity<MyErrorDetail> allExceptionHandler(Exception exception, WebRequest webRequest){
 			MyErrorDetail myError = new MyErrorDetail();

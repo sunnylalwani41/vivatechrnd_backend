@@ -3,6 +3,9 @@ package com.vivatechrnd.model;
 import java.time.LocalDateTime;
 import java.util.Random;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -16,6 +19,7 @@ import jakarta.validation.constraints.Size;
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
+	@JsonProperty(access = Access.READ_ONLY)
 	private String uuid;
 	private String name;
 	@Column(nullable = false, unique = true)
