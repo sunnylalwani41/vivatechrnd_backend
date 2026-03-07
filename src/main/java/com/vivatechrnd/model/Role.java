@@ -1,6 +1,8 @@
 package com.vivatechrnd.model;
 
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.Column;
@@ -16,7 +18,7 @@ public class Role {
 	private String uuid;
 	@Column(nullable = false, unique = true)
 	private String roleName;
-	private Set<String> accessControl = new LinkedHashSet<>();
+	private List<AccessControl> accessControl = new ArrayList<>();
 	
 	public String getUuid() {
 		return uuid;
@@ -30,10 +32,10 @@ public class Role {
 	public void setRoleName(String roleName) {
 		this.roleName = roleName;
 	}
-	public Set<String> getAccessControl() {
+	public List<AccessControl> getAccessControl() {
 		return accessControl;
 	}
-	public void setAccessControl(Set<String> accessControl) {
+	public void setAccessControl(List<AccessControl> accessControl) {
 		this.accessControl = accessControl;
 	}
 }
