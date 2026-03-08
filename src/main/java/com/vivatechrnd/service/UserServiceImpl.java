@@ -1,5 +1,6 @@
 package com.vivatechrnd.service;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -7,20 +8,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
-import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.Response;
 import com.vivatechrnd.dto.UserRequestBody;
+import com.vivatechrnd.dto.UserResponse;
 import com.vivatechrnd.exception.RoleException;
 import com.vivatechrnd.exception.UserException;
 import com.vivatechrnd.model.Role;
 import com.vivatechrnd.model.User;
 import com.vivatechrnd.repository.RoleRepository;
 import com.vivatechrnd.repository.UserRepository;
+import com.vivatechrnd.util.JwtFilter;
 
 import jakarta.transaction.Transactional;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 import tools.jackson.databind.ObjectMapper;
 
 @Service
@@ -31,6 +34,8 @@ public class UserServiceImpl implements UserService{
 	private Environment env;
 	@Autowired
 	private RoleRepository roleRepository;
+	@Autowired
+	private JwtFilter jwtFilter;
 	
 	private final String SMSAPI = "https://www.fast2sms.com/dev/bulkV2";
 	private final String SMSTYPE = "q";
@@ -47,7 +52,7 @@ public class UserServiceImpl implements UserService{
 
 	@Transactional
 	@Override
-	public Boolean addUser(User user) throws UserException {
+	public User addUser(User user) throws UserException {
 		Boolean isExistUser = checkUserExistByContactNumber(user.getContactNumber());
 		
 		if (isExistUser)
@@ -56,11 +61,12 @@ public class UserServiceImpl implements UserService{
 		//create the otp
 		user.createOtp();
 		
-		//store the otp in the database
-		String otp = user.getOtp();
-		userRepository.save(user);
+		//send otp to the contact number
+		String otp = user.getOtp();		
+		sendOtp(otp, user.getContactNumber());
 		
-		return sendOtp(otp, user.getContactNumber());
+		//store the otp in the database
+		return userRepository.save(user);
 	}
 	
 	private Boolean sendOtp(String otp, String contactNumber) {
@@ -92,17 +98,13 @@ public class UserServiceImpl implements UserService{
 		        .addHeader("authorization", apiKey)
 		        .addHeader("content-type", "application/json")
 		        .build();
-		try {
-			Response response = client.newCall(request).execute();
-	
-			if(response.isSuccessful()) {
-				System.out.println("result: " + response.body().string());
-				
-				return true;
-			}
-			else {
-				return false;
-			}
+		try (Response response = client.newCall(request).execute()) {
+
+    System.out.println("HTTP CODE: " + response.code());
+//    System.out.println("API RESPONSE: " + result);
+//    return true;
+
+    			return response.isSuccessful();
 			
 		}
 		catch (Exception e) {
@@ -122,5 +124,39 @@ public class UserServiceImpl implements UserService{
 		user.setName(userRequestBody.getName());
 		
 		return user;
+	}
+
+	@Override
+	public UserResponse checkOtp(String otp, String contactNumber) throws UserException {
+		User user = userRepository.findByContactNumber(contactNumber).orElseThrow(() -> new UserException("User Not Found"));
+		
+		if(!user.getIsVerify() && user.getOtp().equals(otp)) {
+			if(user.getOtpExpiryTime().isBefore(LocalDateTime.now()))
+				throw new UserException("Otp has been expired.");
+			
+			user.setIsVerify(true);
+			
+			String jwtToken = jwtFilter.generateToken(user);
+			
+			UserResponse userResponse = new UserResponse();
+			userResponse.setContactNumber(contactNumber);
+			userResponse.setName(user.getName());
+			userResponse.setToken(jwtToken);
+			
+			userRepository.save(user);
+			return userResponse;
+		}
+		else {
+			throw new UserException("Invalid Otp...");
+		}
+	}
+
+	@Override
+	public Boolean sendOtpForLogin(String contactNumber) throws UserException {
+		User user = getUserByContactNumber(contactNumber);
+		user.createOtp();
+		userRepository.save(user);
+		
+		return sendOtp(user.getOtp(), contactNumber);
 	}
 }

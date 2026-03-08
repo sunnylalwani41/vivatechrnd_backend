@@ -33,7 +33,7 @@ public class User {
 	private Boolean isVerify = false;
 	//20 minute valid
 	private LocalDateTime otpExpiryTime;
-	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	private Role role;
 	
 	public Role getRole() {
@@ -56,6 +56,7 @@ public class User {
 		
 		this.setOtp(otp);
 		this.setOtpExpiryTime(LocalDateTime.now().plusMinutes(20));
+		this.setIsVerify(false);
 	}
 
 	public String getUuid() {

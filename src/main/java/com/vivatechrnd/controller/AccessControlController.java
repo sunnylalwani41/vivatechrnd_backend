@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,6 +31,14 @@ public class AccessControlController {
 	public ResponseEntity<GenericResponse<List<AccessControl>>> getAllAccessControlsController(){
 		List<AccessControl> list = accessControlService.getAccessControls();
 		GenericResponse<List<AccessControl>> genericResponse = new GenericResponse<List<AccessControl>>("", true, list);
+		
+		return ResponseEntity.ok(genericResponse);
+	}
+	
+	@GetMapping("/test_access_control")
+	@PreAuthorize("hasAuthority('test_access_control')")
+	public ResponseEntity<GenericResponse<String>> testAccessControlController(){
+		GenericResponse<String> genericResponse = new GenericResponse<String>("", true, "Successfully Test the access control");
 		
 		return ResponseEntity.ok(genericResponse);
 	}

@@ -31,7 +31,7 @@ public class SpringConfig {
 
 	    http.csrf(csrf -> csrf.disable());
 
-	    http.authorizeHttpRequests(auth -> auth.requestMatchers("/get_all_role", "/add_role")
+	    http.authorizeHttpRequests(auth -> auth.requestMatchers("/get_all_role", "/add_role", "/add_user", "/check_user_exist", "/otp_submit", "/send_otp")
 	    		.permitAll()
 	        .anyRequest().authenticated())
 	    .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)

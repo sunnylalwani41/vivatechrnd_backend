@@ -1,8 +1,10 @@
 package com.vivatechrnd.util;
 
 import java.io.IOException;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,9 +12,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.vivatechrnd.model.User;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,7 +28,8 @@ public class JwtFilter extends OncePerRequestFilter{
 	
 	@Autowired
 	private UserDetailsService userDetailsService;
-	private final String SECRETKEY = "b1N6eXhVY3R0Q2s4VHJ5bFh3U0Z5aE5kM3Q=";
+	@Value("${secret.key}")
+	private String secretKey;
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -61,11 +67,21 @@ public class JwtFilter extends OncePerRequestFilter{
 	
 	public String extractEmail(String token) {
 		return Jwts.parser().
-				setSigningKey(SECRETKEY.getBytes()).
+				setSigningKey(secretKey.getBytes()).
 				build().
 				parseClaimsJws(token).
 				getBody().
 				getSubject();
+	}
+	
+	public String generateToken(User user) {
+		return Jwts.builder().
+				setSubject(user.getContactNumber()).
+				claim("role", user.getRole().getRoleName()).
+				setIssuedAt(new Date()).
+				setExpiration(new Date(System.currentTimeMillis() + 108000000)).
+				signWith(Keys.hmacShaKeyFor(secretKey.getBytes())).
+				compact();
 	}
 
 }

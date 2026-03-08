@@ -19,7 +19,7 @@ public class Role {
 	private String uuid;
 	@Column(nullable = false, unique = true)
 	private String roleName;
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.EAGER)
 	private List<AccessControl> accessControl = new ArrayList<>();
 	
 	public String getUuid() {
