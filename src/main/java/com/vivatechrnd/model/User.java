@@ -6,6 +6,7 @@ import java.util.Random;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -30,7 +31,7 @@ public class User {
 	private Boolean isVerify = false;
 	//20 minute valid
 	private LocalDateTime otpExpiryTime;
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
 	private Role role;
 	
 	public Role getRole() {
