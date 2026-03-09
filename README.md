@@ -8,7 +8,7 @@ The system allows users to register using a mobile number, verify via OTP, and a
 
 # Tech Stack
 
-- Java 17
+- Java
 - Spring Boot
 - Spring Security
 - JWT Authentication
