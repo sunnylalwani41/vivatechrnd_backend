@@ -234,7 +234,7 @@ Token used to access secured APIs
 ## 1️⃣ Clone Repository
 
 ```
-git clone https://github.com/YOUR_USERNAME/YOUR_REPOSITORY.git
+git clone https://github.com/sunnylalwani41/vivatechrnd_backend.git
 ```
 
 ## 2️⃣ Navigate to Project
@@ -262,8 +262,8 @@ mvn spring-boot:run
 Add the following in **application.properties**
 
 ```
-spring.datasource.url=jdbc:postgresql://localhost:5432/database
-spring.datasource.username=postgres
+spring.datasource.url=jdbc:mysql://localhost:3306/database
+spring.datasource.username=root
 spring.datasource.password=password
 
 secret.key=your_jwt_secret
@@ -282,7 +282,7 @@ You can test APIs using:
 - REST Client
 
 A Postman collection is included for testing all endpoints.
-
+<a href="" download>Click Here To Download The Postman Json File</a> 
 ---
 
 # Error Handling
