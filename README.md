@@ -262,13 +262,15 @@ mvn spring-boot:run
 Add the following in **application.properties**
 
 ```
-spring.datasource.url=jdbc:mysql://localhost:3306/database
-spring.datasource.username=root
-spring.datasource.password=password
+spring.datasource.url=jdbc:mysql://localhost:3306/vivatechrnd
+spring.datasource.username=Your_username
+spring.datasource.password=Your_password
 
-secret.key=your_jwt_secret
+spring.jpa.hibernate.ddl-auto=update
 
-fast2sms.api.key=your_fast2sms_key
+fast2sms.api.key=Your_fast2sms_api_key
+
+secret.key=Your_secret_key
 ```
 
 ---
