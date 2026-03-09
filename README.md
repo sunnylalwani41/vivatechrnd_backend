@@ -134,16 +134,7 @@ GET /otp_send?contactNumber=8890918364
 ### Verify OTP
 
 ```
-POST /otp_submit
-```
-
-Body
-
-```json
-{
-  "contactNumber": "8890918364",
-  "otp": "123456"
-}
+POST /otp_submit?contactNumber=8890918364&otp=123456
 ```
 
 Response
