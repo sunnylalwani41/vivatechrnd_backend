@@ -284,7 +284,7 @@ You can test APIs using:
 - REST Client
 
 A Postman collection is included for testing all endpoints.
-<a href="" download>Click Here To Download The Postman Json File</a> 
+<a href="Viva Tech RnD Assignment.postman_collection.json" download>Click Here To Download The Postman Json File</a>
 ---
 
 # Error Handling
@@ -303,30 +303,8 @@ Global error response format:
   "localDateTime": "Timestamp"
 }
 ```
-
----
-
-# Future Improvements
-
-- Redis based OTP storage
-- Rate limiting for OTP requests
-- Swagger API documentation
-- Role based endpoint authorization
-- Refresh token support
-
----
-
 # Author
 
 **Sunny Lalwani**
 
 Full Stack Java Developer
-
-Tech Stack
-
-- Java
-- Spring Boot
-- Hibernate
-- PostgreSQL / MySQL
-- JavaScript
-- REST APIs
