@@ -262,13 +262,15 @@ mvn spring-boot:run
 Add the following in **application.properties**
 
 ```
-spring.datasource.url=jdbc:mysql://localhost:3306/database
-spring.datasource.username=root
-spring.datasource.password=password
+spring.datasource.url=jdbc:mysql://localhost:3306/vivatechrnd
+spring.datasource.username=Your_username
+spring.datasource.password=Your_password
 
-secret.key=your_jwt_secret
+spring.jpa.hibernate.ddl-auto=update
 
-fast2sms.api.key=your_fast2sms_key
+fast2sms.api.key=Your_fast2sms_api_key
+
+secret.key=Your_secret_key
 ```
 
 ---
@@ -282,7 +284,7 @@ You can test APIs using:
 - REST Client
 
 A Postman collection is included for testing all endpoints.
-<a href="" download>Click Here To Download The Postman Json File</a> 
+<a href="Viva Tech RnD Assignment.postman_collection.json" download>Click Here To Download The Postman Json File</a>
 ---
 
 # Error Handling
@@ -301,30 +303,8 @@ Global error response format:
   "localDateTime": "Timestamp"
 }
 ```
-
----
-
-# Future Improvements
-
-- Redis based OTP storage
-- Rate limiting for OTP requests
-- Swagger API documentation
-- Role based endpoint authorization
-- Refresh token support
-
----
-
 # Author
 
 **Sunny Lalwani**
 
 Full Stack Java Developer
-
-Tech Stack
-
-- Java
-- Spring Boot
-- Hibernate
-- PostgreSQL / MySQL
-- JavaScript
-- REST APIs
