@@ -29,7 +29,7 @@ public class SpringConfig {
 	@Bean
 	public SecurityFilterChain security(HttpSecurity http) throws Exception {
 
-	    http.csrf(csrf -> csrf.disable());
+	    http.csrf(csrf -> csrf.disable()).cors(cors ->{});
 
 	    http.authorizeHttpRequests(auth -> auth.requestMatchers("/get_all_role", "/add_role", "/add_user", "/check_user_exist", "/otp_submit", "/send_otp")
 	    		.permitAll()

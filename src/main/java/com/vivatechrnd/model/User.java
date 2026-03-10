@@ -29,6 +29,7 @@ public class User {
 	@Pattern(regexp = "\\d{10}", message = "Contact number must be exactly 10 digits")
 	private String contactNumber;
 	@Pattern(regexp = "\\d{6}", message = "OTP must be exactly 6 digits")
+	@JsonProperty(access = Access.WRITE_ONLY)
 	private String otp;
 	private Boolean isVerify = false;
 	//20 minute valid
